@@ -1,4 +1,6 @@
+using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using OpenAiBranchNaming.ApiService.Ai;
 using OpenAiBranchNaming.ApiService.Ai.Branching;
 
@@ -20,7 +22,43 @@ builder.Services.AddHttpClient<OpenAiClient>(client =>
 
 builder.Services.AddSingleton<IBranchNamingService, OpenAiBranchNamingService>();
 
+const string slidingPolicy = "sliding";
+
+builder.Services.AddRateLimiter(limiterOptions =>
+{
+    limiterOptions
+        .AddSlidingWindowLimiter(policyName: slidingPolicy, options =>
+        {
+            options.PermitLimit = 60;
+            options.Window = TimeSpan.FromMinutes(60);
+            options.SegmentsPerWindow = 6;
+            options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+            options.QueueLimit = 20;
+        });
+    
+    static string GetUserEndPoint(HttpContext context) =>
+        $"User {context.User.Identity?.Name ?? "Anonymous"} " +
+        $"endpoint:{context.Request.Path} {context.Connection.RemoteIpAddress}";
+
+    limiterOptions.OnRejected = (context, cancellationToken) =>
+    {
+        if (context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
+        {
+            context.HttpContext.Response.Headers.RetryAfter = ((int) retryAfter.TotalSeconds).ToString();
+        }
+
+        context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+        context.HttpContext.RequestServices.GetService<ILoggerFactory>()?
+            .CreateLogger("Microsoft.AspNetCore.RateLimitingMiddleware")
+            .LogWarning("OnRejected: {GetUserEndPoint}", GetUserEndPoint(context.HttpContext));
+
+        return new ValueTask();
+    };
+});
+
 var app = builder.Build();
+
+app.UseRateLimiter();
 
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();
@@ -39,7 +77,8 @@ app
                 [FromServices] IBranchNamingService svc,
                 string ticketName)
             => await svc.GetBranchName(ticketName))
-    .CacheOutput(options => options.Expire(TimeSpan.FromHours(2)));
+    .CacheOutput(options => options.Expire(TimeSpan.FromHours(2)))
+    .RequireRateLimiting(slidingPolicy);
 
 app.MapGet("/weatherforecast", () =>
 {
