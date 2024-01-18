@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add service defaults & Aspire components.
 builder.AddServiceDefaults();
+builder.AddRedisOutputCache("cache");
 
 // Add services to the container.
 builder.Services.AddProblemDetails();
@@ -23,6 +24,8 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();
+
+app.UseOutputCache();
 
 var summaries = new[]
 {
