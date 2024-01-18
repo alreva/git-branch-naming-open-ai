@@ -1,0 +1,64 @@
+﻿@page "/"
+
+@rendermode InteractiveServer
+
+@inject IJSRuntime JsRuntime
+@inject BranchNamingApiClient BranchNamingApi
+
+<PageTitle>Git Branch Naming</PageTitle>
+
+<h1>Git Branch Naming</h1>
+
+<p>This component demonstrates showing data loaded from a backend API service.</p>
+
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-12 py-1">
+            <input type="text" class="form-control"
+                   @bind="Details.WorkItemDetails"
+                   placeholder="Work item details, e.g. Task 317520: add package yaml build" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 py-1">
+            <button class="btn btn-primary" @onclick="ReloadDetails">OK</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 pt-3">
+            @if (Details.Status is not Status.Loading)
+            {
+                <input type="text" class="form-control" readonly="readonly" @bind="Details.BranchName" />
+            }
+            else
+            {
+                <em>Loading...</em>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 py-1">
+            <button class="btn btn-primary" @onclick="CopyTextToClipboard">Copy</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    
+    private BranchDetails Details { get; } = new();
+
+    private async Task ReloadDetails()
+    {
+        Details.Status = Status.Loading;
+        if (!string.IsNullOrWhiteSpace(Details.WorkItemDetails))
+        {
+            Details.BranchName = await BranchNamingApi.GetBranchName(Details.WorkItemDetails);
+        }
+        Details.Status = Status.Idle;
+    }
+    
+    private async Task CopyTextToClipboard()
+    {
+        await JsRuntime.InvokeVoidAsync("clipboardCopy.copyText", Details.BranchName);
+    }
+}

@@ -1,0 +1,42 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.0.0
+MinimumVisualStudioVersion = 17.8.0.0
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAiBranchNaming.AppHost", "OpenAiBranchNaming.AppHost\OpenAiBranchNaming.AppHost.csproj", "{175D2A41-7FAC-4E25-B3C6-7712F24C508B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAiBranchNaming.ServiceDefaults", "OpenAiBranchNaming.ServiceDefaults\OpenAiBranchNaming.ServiceDefaults.csproj", "{AE4E3A96-7B90-44BB-86AC-FE4B1F54234A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAiBranchNaming.ApiService", "OpenAiBranchNaming.ApiService\OpenAiBranchNaming.ApiService.csproj", "{6FE0A476-169D-49A7-840D-0E309852C010}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAiBranchNaming.Web", "OpenAiBranchNaming.Web\OpenAiBranchNaming.Web.csproj", "{3573BD91-7C47-4115-A88B-64468FBCFA24}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{175D2A41-7FAC-4E25-B3C6-7712F24C508B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{175D2A41-7FAC-4E25-B3C6-7712F24C508B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{175D2A41-7FAC-4E25-B3C6-7712F24C508B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{175D2A41-7FAC-4E25-B3C6-7712F24C508B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE4E3A96-7B90-44BB-86AC-FE4B1F54234A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE4E3A96-7B90-44BB-86AC-FE4B1F54234A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE4E3A96-7B90-44BB-86AC-FE4B1F54234A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE4E3A96-7B90-44BB-86AC-FE4B1F54234A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FE0A476-169D-49A7-840D-0E309852C010}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FE0A476-169D-49A7-840D-0E309852C010}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FE0A476-169D-49A7-840D-0E309852C010}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FE0A476-169D-49A7-840D-0E309852C010}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3573BD91-7C47-4115-A88B-64468FBCFA24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3573BD91-7C47-4115-A88B-64468FBCFA24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3573BD91-7C47-4115-A88B-64468FBCFA24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3573BD91-7C47-4115-A88B-64468FBCFA24}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {956D54B8-1C76-4D33-B9C3-FEAB07D4D772}
+	EndGlobalSection
+EndGlobal
