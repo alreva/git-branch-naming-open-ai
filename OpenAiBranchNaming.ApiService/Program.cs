@@ -71,12 +71,12 @@ var summaries = new[]
 };
 
 app
-    .MapPost(
+    .MapGet(
         "/branch/gen",
         async (
                 [FromServices] IBranchNamingService svc,
-                BranchRequest request)
-            => await svc.GetBranchName(request.TicketName))
+                [FromQuery] string ticketName)
+            => await svc.GetBranchName(ticketName))
     .CacheOutput(options => options.Expire(TimeSpan.FromHours(2)))
     .RequireRateLimiting(slidingPolicy);
 
@@ -96,8 +96,6 @@ app.MapGet("/weatherforecast", () =>
 app.MapDefaultEndpoints();
 
 app.Run();
-
-record BranchRequest(string TicketName);
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {

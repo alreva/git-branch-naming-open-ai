@@ -1,10 +1,14 @@
+using Microsoft.AspNetCore.WebUtilities;
+
 namespace OpenAiBranchNaming.Web;
 
 public class BranchNamingApiClient(HttpClient httpClient)
 {
     public async Task<string> GetBranchName(string ticketName)
     {
-        var r = await httpClient.PostAsJsonAsync($"/branch/gen", new {ticketName});
-        return await r.Content.ReadAsStringAsync();
+        var uri = QueryHelpers.AddQueryString(
+            $"/branch/gen",
+            new[] { new KeyValuePair<string, string?>("ticketName", ticketName) });
+        return await httpClient.GetStringAsync(uri);
     }
 }
